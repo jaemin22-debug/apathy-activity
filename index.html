@@ -7,7 +7,6 @@
     <style>
         :root {
             --bg-color: #f4f7f6;
-            --container-bg: #ffffff;
             --border-color: #2c3e50;
             --text-color: #2c3e50;
         }
@@ -19,81 +18,48 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
+            padding: 20px;
             margin: 0;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            max-width: 800px;
-        }
-
-        h1 {
-            font-weight: 400;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .instruction {
-            font-style: italic;
-            color: #5f6a6a;
-            line-height: 1.6;
-        }
+        header { text-align: center; margin-bottom: 20px; }
+        h1 { letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
+        .instruction { font-style: italic; color: #5f6a6a; font-size: 0.9rem; }
 
         .main-work-area {
             width: 100%;
-            max-width: 850px;
-            background: var(--container-bg);
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border-radius: 4px;
+            max-width: 800px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        /* 캔버스 영역: 경계선 강화 */
+        /* 캔버스 경계선 및 터치 방지 */
         #canvas-wrapper {
-            position: relative;
             width: 100%;
             aspect-ratio: 16 / 9;
             border: 2px solid var(--border-color);
-            background: #fff;
-            touch-action: none; /* 아이패드 제스처 간섭 방지 */
             margin-bottom: 20px;
+            touch-action: none; 
+            overflow: hidden;
         }
 
-        canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-            cursor: crosshair;
-        }
+        canvas { width: 100%; height: 100%; display: block; cursor: crosshair; }
 
-        /* 텍스트 영역: 상단 경계선 및 전체 테두리 명확화 */
-        .reflection-area {
-            width: 100%;
-            border-top: 1px dashed #ccc; /* 캔버스와의 시각적 구분선 */
-            padding-top: 20px;
-        }
-
-        .text-label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        /* 텍스트 박스 경계선 강화 */
+        .reflection-area { width: 100%; border-top: 2px solid var(--border-color); padding-top: 15px; }
+        .text-label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.8rem; }
 
         textarea {
             width: 100%;
-            height: 180px;
-            padding: 20px;
+            height: 150px;
+            padding: 15px;
             box-sizing: border-box;
             border: 2px solid var(--border-color);
-            background-color: #fff;
             font-family: 'Georgia', serif;
-            font-size: 1.15rem;
-            line-height: 1.8;
+            font-size: 1.1rem;
+            line-height: 1.6;
             resize: none;
             outline: none;
         }
@@ -101,37 +67,26 @@
         .controls {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 30px;
+            gap: 10px;
+            margin-top: 20px;
             width: 100%;
-            max-width: 850px;
+            max-width: 800px;
         }
 
         .btn {
-            padding: 12px 24px;
+            padding: 10px 20px;
             background: var(--border-color);
-            border: 1px solid var(--border-color);
             color: white;
+            border: none;
             cursor: pointer;
             font-weight: bold;
             border-radius: 4px;
             flex: 1;
         }
 
-        .btn-outline {
-            background: transparent;
-            color: var(--border-color);
-        }
+        .btn-outline { background: #fff; color: var(--border-color); border: 2px solid var(--border-color); }
 
-        footer {
-            margin-top: 60px;
-            font-size: 0.85rem;
-            color: #95a5a6;
-        }
-
-        @media print {
-            .controls, footer { display: none; }
-        }
+        @media print { .controls { display: none; } }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -139,11 +94,8 @@
 <body>
 
 <header>
-    <h1>Apathy & Everyday Scene</h1>
-    <p class="instruction">
-        "About suffering they were never wrong..."<br>
-        무심한 일상의 장면을 그리고, 그 아래에 시적 통찰을 기록하세요.
-    </p>
+    <h1>Project: Apathy</h1>
+    <p class="instruction">Draw a scene of indifference and write your verse.</p>
 </header>
 
 <div class="main-work-area" id="capture-area">
@@ -152,75 +104,63 @@
     </div>
     
     <div class="reflection-area">
-        <span class="text-label">Verse or Aphorism</span>
-        <textarea placeholder="Write your thoughts here..."></textarea>
+        <span class="text-label">VERSE OR APHORISM</span>
+        <textarea placeholder="Write here..."></textarea>
     </div>
 </div>
 
 <div class="controls">
-    <button class="btn btn-outline" onclick="clearCanvas()">Clear (다시 그리기)</button>
-    <button class="btn" onclick="downloadPDF()">Save as PDF (출력/저장)</button>
+    <button class="btn btn-outline" onclick="clearCanvas()">Clear</button>
+    <button class="btn" onclick="downloadPDF()">Save PDF</button>
 </div>
-
-<footer>
-    &copy; 2026 Department of English Education.
-</footer>
 
 <script>
     const canvas = document.getElementById('drawingCanvas');
     const ctx = canvas.getContext('2d');
     const wrapper = document.getElementById('canvas-wrapper');
 
-    // 그림 데이터 보존을 위한 리사이즈 로직
-    function setupCanvas() {
-        const rect = wrapper.getBoundingClientRect();
-        
-        // 기존 내용 백업
-        const tempCanvas = document.createElement('canvas');
-        const tempCtx = tempCanvas.getContext('2d');
-        tempCanvas.width = canvas.width;
-        tempCanvas.height = canvas.height;
-        tempCtx.drawImage(canvas, 0, 0);
+    // [중요] 캔버스 초기 설정 - 딱 한 번만 실행되도록 함
+    let isInitialized = false;
 
-        // 새 크기 설정 (고해상도 대응)
+    function initCanvas() {
+        if (isInitialized) return; // 이미 설정되었다면 다시 실행하지 않음 (지워짐 방지)
+
+        const rect = wrapper.getBoundingClientRect();
         const dpr = window.devicePixelRatio || 1;
+
+        // 캔버스 크기를 고해상도로 고정
         canvas.width = rect.width * dpr;
         canvas.height = rect.height * dpr;
+        
         ctx.scale(dpr, dpr);
-
-        // 백업 내용 복구 (크기 비율에 맞춰 조정)
-        ctx.drawImage(tempCanvas, 0, 0, tempCanvas.width / dpr, tempCanvas.height / dpr, 0, 0, rect.width, rect.height);
-
-        // 드로잉 스타일 재설정
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         ctx.strokeStyle = '#2c3e50';
         ctx.lineWidth = 2.5;
+        
+        isInitialized = true;
     }
 
-    // 초기 설정 및 리사이즈 이벤트 바인딩
-    window.addEventListener('load', setupCanvas);
-    // 아이패드 스크롤 시 리사이즈가 호출되어 지워지는 것을 방지하기 위해 가로폭 변경 시에만 작동하도록 제한할 수도 있으나, 
-    // 위에서 '복구' 로직을 넣었으므로 이제 지워지지 않습니다.
-    window.addEventListener('resize', setupCanvas);
+    // 창 크기가 변해도 캔버스 크기를 재설정하지 않음 (스크롤 시 지워짐 차단)
+    window.addEventListener('load', initCanvas);
 
     let isDrawing = false;
-    let lastX = 0;
-    let lastY = 0;
+    let lastX = 0, lastY = 0;
 
     function getCoords(e) {
         const rect = canvas.getBoundingClientRect();
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
         const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        // 스크롤 양을 고려하지 않는 getBoundingClientRect 좌표 사용
         return [clientX - rect.left, clientY - rect.top];
     }
 
-    function startDrawing(e) {
+    canvas.addEventListener('mousedown', (e) => {
         isDrawing = true;
         [lastX, lastY] = getCoords(e);
-    }
+    });
 
-    function draw(e) {
+    canvas.addEventListener('mousemove', (e) => {
         if (!isDrawing) return;
         const [x, y] = getCoords(e);
         ctx.beginPath();
@@ -228,24 +168,32 @@
         ctx.lineTo(x, y);
         ctx.stroke();
         [lastX, lastY] = [x, y];
-    }
+    });
 
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mousemove', draw);
     window.addEventListener('mouseup', () => isDrawing = false);
 
+    // 아이패드 전용 터치 이벤트
     canvas.addEventListener('touchstart', (e) => {
         if(e.target === canvas) e.preventDefault();
-        startDrawing(e);
+        isDrawing = true;
+        [lastX, lastY] = getCoords(e);
     }, {passive: false});
+
     canvas.addEventListener('touchmove', (e) => {
         if(e.target === canvas) e.preventDefault();
-        draw(e);
+        if (!isDrawing) return;
+        const [x, y] = getCoords(e);
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        [lastX, lastY] = [x, y];
     }, {passive: false});
+
     canvas.addEventListener('touchend', () => isDrawing = false);
 
     function clearCanvas() {
-        if(confirm("작성 중인 그림을 모두 지우시겠습니까?")) {
+        if(confirm("지우시겠습니까?")) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
     }
@@ -253,24 +201,22 @@
     async function downloadPDF() {
         const { jsPDF } = window.jspdf;
         const element = document.getElementById('capture-area');
-        
+        const btn = document.querySelector('.btn');
+        btn.innerText = "Processing...";
+
         try {
-            // 텍스트 영역의 글자가 짤리지 않도록 캔버스 생성
-            const canvasImg = await html2canvas(element, {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: "#ffffff"
-            });
-            
+            const canvasImg = await html2canvas(element, { scale: 2 });
             const imgData = canvasImg.toDataURL('image/png');
             const pdf = new jsPDF('p', 'mm', 'a4');
-            const pdfWidth = pdf.internal.pageSize.getWidth() - 40;
+            const pdfWidth = pdf.internal.pageSize.getWidth() - 20;
             const pdfHeight = (canvasImg.height * pdfWidth) / canvasImg.width;
             
-            pdf.addImage(imgData, 'PNG', 20, 20, pdfWidth, pdfHeight);
-            pdf.save('Apathy_Project_Work.pdf');
-        } catch (error) {
-            alert("PDF 생성 실패: " + error);
+            pdf.addImage(imgData, 'PNG', 10, 10, pdfWidth, pdfHeight);
+            pdf.save('Apathy_Work.pdf');
+        } catch (e) {
+            alert("Error: " + e);
+        } finally {
+            btn.innerText = "Save PDF";
         }
     }
 </script>
